@@ -15,4 +15,4 @@ cd本程序目录，比如说 cd /root/cdntest
 支持Linux和Windows（需要Git For Windows）
 
 #Source
-原版来自 https://cloud.tencent.com/developer/article/1894750
+原版来自 https://cloud.tencent.com/developer/article/1458328
