@@ -51,7 +51,7 @@ elif [[ $method == 2 ]]; then
 		for ip in $(cat net.ip);do
 			echo "源站IP："$ip >>/tmp/source_availability.log
 			echo "测试命令：curl -I "$url" --resolve $host:$port:$ip"
-			curl -X GET "$url" -I --resolve $host:$port:$ip --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36">>/tmp/source_availability.log
+			curl -I "$url" --resolve $host:$port:$ip >>/tmp/source_availability.log
 		done
 		let ++count
 	done
@@ -80,7 +80,6 @@ elif [ $http_code_num == $test_num ];then
 else
 	echo "------------------------------------------------------------------------------"
 	echo "总请求数和HTTP状态码数量不一致，请查阅/tmp/source_availability.log获得详细信息"
-	echo "多1个x轮是正常的BUG，懒得修了"
 fi
 }
 

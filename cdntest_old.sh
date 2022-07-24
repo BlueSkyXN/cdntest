@@ -2,17 +2,14 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 # Created by Johnnyxsu from TencentCloud
-# Based On https://cloud.tencent.com/developer/article/1458328
-# Modified By BlueSkyXN https://www.blueskyxn.com/
+
 test_source_availability(){
 if [ -s "/tmp/source_availability.log" ]; then rm -rf /tmp/source_availability.log ;fi
 
 
-echo "CDNTEST检测多节点可用性脚本 By BlueSkyXN"
+echo "                 检测多源站可用性脚本"
 echo "---------------------------------------------------"
-echo "需要把源站IP复制到该脚本相同目录下的net.ip文件内"
-echo "默认UA是Chrome v103+Win10,以HTTP GET进行请求"
-echo "仓库：https://github.com/BlueSkyXN/cdntest"
+echo "注：需要把源站IP复制到该脚本相同目录下的net.ip文件内"
 echo "---------------------------------------------------"
 
 echo && read -e -p "设置循环测试次数（默认1次）：" loop
@@ -38,7 +35,7 @@ if [[ $method == 1 ]]; then
 		for ip in $(cat net.ip);do 
 			echo "源站IP："$ip >>/tmp/source_availability.log
 			echo "测试命令：curl -I "$url" --resolve $host:$port:$ip"
-			curl -X GET "$url" -I -x $ip:$port --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36">>/tmp/source_availability.log
+			curl -I "$url" -x $ip:$port >>/tmp/source_availability.log
 		done
 		let ++count
 	done
@@ -54,7 +51,7 @@ elif [[ $method == 2 ]]; then
 		for ip in $(cat net.ip);do
 			echo "源站IP："$ip >>/tmp/source_availability.log
 			echo "测试命令：curl -I "$url" --resolve $host:$port:$ip"
-			curl -X GET "$url" -I --resolve $host:$port:$ip --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36">>/tmp/source_availability.log
+			curl -I "$url" --resolve $host:$port:$ip >>/tmp/source_availability.log
 		done
 		let ++count
 	done
@@ -64,7 +61,6 @@ fi
 analysis_source_availability_log(){
 
 source_IP_num=`cat net.ip|wc -l`
-source_IP_num=$source_IP_num+1
 test_num=`awk 'BEGIN{printf ('$source_IP_num'*'$loop')}'`
 http_code_num=`cat /tmp/source_availability.log |grep HTTP|wc -l`
 echo "压测命令：curl -I $url "
